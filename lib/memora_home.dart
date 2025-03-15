@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'customer.dart';
-import 'message.dart';
+import 'model/customer.dart';
+import 'model/message.dart';
 import 'data_com.dart';
 import 'package:intl/intl.dart';
+import 'util/time_util.dart';
 
 class MemoraHomePage extends StatefulWidget {
   const MemoraHomePage({super.key, required this.title});
@@ -150,38 +151,68 @@ class _MemoraHomePageState extends State<MemoraHomePage> {
             ),
             SizedBox(height: 10),
             ElevatedButton(
-              onPressed: () => submitData(
-                context,
-                _customerEmailController,
-                _emailsController,
-                _contentController,
-                _customer,
-                _message,
-                _selectedDate,
-                _selectedTimePeriod,
-                (email) {
+              onPressed: () {
+                if (_contentController.text.isEmpty) {
                   setState(() {
-                    _message.emails = _emailsController.text.split(',');
-                    _message.content = _contentController.text;
-                    _message.maturedAt = _selectedDate?.millisecondsSinceEpoch ?? 0;
-                    _customer.email = email;
-                  });
-                },
-                (successMessage) {
-                  setState(() {
-                    _successMessage = successMessage;
-                    _errorMessage = null;
-                    _message.status = 'sent';
-                    _customer.messages.add(_message);
-                  });
-                },
-                (errorMessage) {
-                  setState(() {
-                    _errorMessage = errorMessage;
+                    _errorMessage = 'Content cannot be empty';
                     _successMessage = null;
                   });
-                },
-              ),
+                  return;
+                } else {
+                  _message.content = _contentController.text;
+                }
+
+                if (_selectedDate == null && _selectedTimePeriod == null) {
+                  setState(() {
+                    _errorMessage = 'You must select either a date or a time period';
+                    _successMessage = null;
+                  });
+                  return;
+                } else {
+                  _message.maturedAt = getMaturityDay(_selectedTimePeriod, _selectedDate);
+                }
+
+                if (_customerEmailController.text.isEmpty) {
+                  setState(() {
+                    _errorMessage = 'Email field cannot be empty';
+                    _successMessage = null;
+                  });
+                  return;
+                } else {
+                  _customer.email = _customerEmailController.text;
+                }
+
+                if (_emailsController.text.isEmpty) {
+                  setState(() {
+                    _errorMessage = 'Emails field cannot be empty';
+                    _successMessage = null;
+                  });
+                  return;
+                } else {
+                  _message.emails = _emailsController.text.split(',');
+                }
+                _message.status = 'sent';
+
+                submitData(
+                  context,
+                  _customer,
+                  _message,
+                  (successMessage) {
+                    setState(() {
+                      _successMessage = successMessage;
+                      _errorMessage = null;
+                      // _message.status = 'saved';
+                      _customer.messages.add(_message);
+                    });
+                  },
+                  (errorMessage) {
+                    setState(() {
+                      _errorMessage = errorMessage;
+                      _successMessage = null;
+                    });
+                  },
+                );
+              },
               child: const Text('Submit'),
             ),
           ],

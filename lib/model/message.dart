@@ -1,12 +1,10 @@
 class Message {
-  int id;
   String status;
   String content;
   List<String> emails;
   int maturedAt;
 
-  Message({this.id = 0,
-    this.status = 'new',
+  Message({this.status = 'unknown',
     this.content = "",
     List<String>? emails,
     this.maturedAt = 0,
@@ -14,10 +12,11 @@ class Message {
 
   @override
   String toString() {
-    return 'Message{id: $id, '
-        'status: $status}'
-        'content: $content}'
-        'emails: $emails}'
-        'maturedAt: $maturedAt}';
+    return 'Message={'
+        'status:$status, '
+        'content:$content, '
+        'emails:$emails, '
+        'maturedAt:$maturedAt'
+        '}';
   }
 }

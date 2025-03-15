@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'google_auth.dart';
-import 'customer.dart';
+import 'model/customer.dart';
 import 'package:logging/logging.dart';
 
 final Logger _logger = Logger('SignInPopup');
