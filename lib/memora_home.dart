@@ -48,17 +48,23 @@ class _MemoraHomePageState extends State<MemoraHomePage> {
             if (_successMessage != null)
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  _successMessage!,
-                  style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.5),
+                  child: Text(
+                    _successMessage!,
+                    style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
             if (_errorMessage != null)
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  _errorMessage!,
-                  style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.5),
+                  child: Text(
+                    _errorMessage!,
+                    style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
             const Text('What is your prediction:'),
