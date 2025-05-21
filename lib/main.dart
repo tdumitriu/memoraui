@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:logging/logging.dart';
-import 'platform_stub.dart' if (dart.library.io) 'platform_io.dart';
 
 import 'memora_home.dart';
 
 void main() async {
-  print('Platform version: ${getPlatformVersion()}');
   _setupLogging();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
